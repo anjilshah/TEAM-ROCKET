@@ -1,5 +1,7 @@
 # Troubleshooting
 
+For the full history of problems actually encountered, their causes, fixes, and evidence, read [development obstacles and fixes](development_journal.md). For detailed collision and object-finding diagnosis, parameter/source mappings, and recovery commands, use [the step-by-step recovery guide](collision_and_perception_guide.md). This page remains the short reference.
+
 ## Missing imports or environment
 
 Use `.venv/bin/python` and the launch scripts, not Ubuntu's system Python. Run `.venv/bin/python -m pip check`. Restore dependencies using `requirements-lock.txt` and install the source with `--no-build-isolation --no-deps -e .`. If venv creation reports missing `ensurepip`, ask an Ubuntu administrator to install `python3-venv`.

@@ -54,6 +54,8 @@ An otherwise seated, released, stable peg may receive two additional 0.9 s settl
 
 ## Debugging decisions
 
+The complete [development journal](development_journal.md) distinguishes observed failures from prevented risks and future work. [Historical failure extracts](evidence/development_failures.json) preserve key measurements even when ignored debug directories are absent. The [recovery guide](collision_and_perception_guide.md) explains how to reproduce diagnostics and select a change before rerunning validation.
+
 Initial flat mesh contacts rocked at the timestep scale. The implementation uses box/cylinder collision primitives where appropriate and multi-contact collision mode for polygon meshes. Peg contact parameters are softened to reduce chatter. Triangle/hexagon contact motion is evaluated with separate linear and angular velocity thresholds, avoiding a norm that mixes meters/second with radians/second. Autonomous verification also observes position drift across six samples, 0.15 s apart.
 
 An early lift target was unreachable with a downward tool despite being inside a radial manufacturer reach number. Workspace cells were narrowed, transfer height reduced to 0.22 m, and lift IK is now validated before attachment. An early board pose was partially occluded by the parked gripper; the home pose now points away from the board. Socket extraction uses all contour levels so a dark board margin cannot hide apertures. Polygon fitting uses uncompressed boundary pixels so vertical triangle edges receive proportional weight.

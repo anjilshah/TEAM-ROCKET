@@ -178,4 +178,6 @@ The repository is prepared locally for `anjilshah/tri-wizard-peg-trial`. **No pu
 - The planner rejects unsafe/unreachable motions rather than finding arbitrary detours. A held-object failure stops the episode for recovery instead of dropping the peg blindly.
 - GUI launch and command handlers are tested. Manual human keyboard interaction remains a demo rehearsal step.
 
-See [troubleshooting](docs/troubleshooting.md) for display/EGL issues, rejected trajectories, perception failures, and recovery.
+For the complete problem-solving record, read [development obstacles and fixes](docs/development_journal.md): actual failure symptoms, diagnosed causes, changes made, supporting measurements, and remaining limitations. The [collision and object-finding recovery guide](docs/collision_and_perception_guide.md) gives step-by-step diagnostics, the exact settings/source files to change, and checks to run afterward. Condensed historical failures are retained in [the evidence file](docs/evidence/development_failures.json).
+
+See [the short troubleshooting reference](docs/troubleshooting.md) for display/EGL issues, rejected trajectories, perception failures, and recovery.

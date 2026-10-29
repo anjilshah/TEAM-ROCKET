@@ -1,0 +1,133 @@
+{
+  "description": "Condensed extracts from actual local development reports, using a new wrapper. Raw debug paths are ignored and may be absent in another checkout. Original measurement values and legacy field names are preserved, including the old mixed-unit speed field.",
+  "observed_failures": [
+    {
+      "source": "results/runs/debug0/episode.json",
+      "run": "debug0",
+      "success": false,
+      "simulation_seconds": 134.28199999991307,
+      "detected_pegs": 4,
+      "detected_sockets": 4,
+      "error": null,
+      "failed_placement_records": [
+        {
+          "shape": "square",
+          "success": false,
+          "attempts": 2,
+          "verification": {
+            "success": false,
+            "physics": {
+              "success": false,
+              "released": true,
+              "xy_error_m": 0.0006637860633146819,
+              "bottom_error_m": 0.0004690184882156275,
+              "orientation_error_rad": 1.4684497675498953e-05,
+              "speed": 0.13503781150251903,
+              "stable": true
+            },
+            "camera": {
+              "success": true,
+              "overhead_top": [
+                0.21497404680428586,
+                0.08486437959440661,
+                0.10153627395629883
+              ],
+              "angled_top_z_m": 0.10153207826793278,
+              "expected_top_z_m": 0.10200009059906007
+            }
+          },
+          "simulation_seconds": 133.68199999991307
+        }
+      ]
+    },
+    {
+      "source": "results/runs/debug1/episode.json",
+      "run": "debug1",
+      "success": false,
+      "simulation_seconds": 82.27599999998965,
+      "detected_pegs": 4,
+      "detected_sockets": 4,
+      "error": null,
+      "failed_placement_records": [
+        {
+          "shape": "triangle",
+          "success": false,
+          "attempts": 1,
+          "error": "Unreachable pose: [ 0.3542 -0.1261  0.27  ], position error=0.0018 m, rotation error=0.0149 rad",
+          "simulation_seconds": 13.69199999996809
+        }
+      ]
+    },
+    {
+      "source": "results/runs/debug2/episode.json",
+      "run": "debug2",
+      "success": false,
+      "simulation_seconds": 28.25399999999522,
+      "detected_pegs": 4,
+      "detected_sockets": 4,
+      "error": null,
+      "failed_placement_records": [
+        {
+          "shape": "square",
+          "success": false,
+          "attempts": 1,
+          "error": "Trajectory collision rejected: peg_square_geom / rim_square_4: -0.0015 m",
+          "simulation_seconds": 27.653999999995218
+        }
+      ]
+    },
+    {
+      "source": "results/runs/debug3/episode.json",
+      "run": "debug3",
+      "success": false,
+      "simulation_seconds": 0.6000000000000004,
+      "detected_pegs": 4,
+      "detected_sockets": 0,
+      "error": "Perception incomplete: pegs=['square', 'triangle', 'circle', 'hexagon'], sockets=[]",
+      "failed_placement_records": []
+    }
+  ],
+  "intermediate_velocity_rejection": {
+    "source": "results/runs/performance_trace/attempts.json",
+    "failed_verifications": [
+      {
+        "shape": "hexagon",
+        "result": {
+          "success": false,
+          "physics": {
+            "success": false,
+            "released": true,
+            "xy_error_m": 0.001131052113547775,
+            "bottom_error_m": 0.00019299169399533515,
+            "orientation_error_rad": 0.004003230166136462,
+            "linear_speed_m_s": 0.005612017792000817,
+            "angular_speed_rad_s": 0.10248392797136102,
+            "stable": true
+          },
+          "camera": {
+            "success": true,
+            "overhead_top": [
+              0.33914319103606333,
+              0.20422449075251217,
+              0.10181951522827148
+            ],
+            "angled_top_z_m": 0.10181337158709199,
+            "expected_top_z_m": 0.10200009059906007
+          }
+        }
+      }
+    ]
+  },
+  "original_controller_profile": {
+    "source": "results/runs/performance_baseline/profile.json",
+    "measurements": {
+      "joint_segments": 268,
+      "cartesian_paths": 16,
+      "cartesian_simulation_seconds": 158.20400000023875,
+      "joint_simulation_seconds": 219.14800000035294,
+      "fixed_joint_settle_seconds": 67.0
+    }
+  },
+  "final_results": "../../results/performance/summary.json",
+  "current_checks": "../../results/validation/checks.json"
+}

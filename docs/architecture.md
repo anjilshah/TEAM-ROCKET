@@ -38,7 +38,7 @@ The gripper closes physically and activates an equality weld only after local ge
 
 Ground truth is isolated to evaluation, grasp capture gating, and collision geometry. Initial pose errors are evaluated by spatial assignment to simulated bodies. Placement additionally checks released equality state, true insertion depth, XY alignment, symmetry-aware yaw, uprightness, linear/angular velocity, and a position stability window. Both camera observations must independently confirm seated top height. A final physical check catches any earlier peg that shifted later.
 
-A seated, released, stable peg whose only remaining problem is contact velocity may receive up to two extra 0.9 s observation windows before re-grasping. These windows repeat the existing camera and physical thresholds; they do not relax success criteria.
+A released, position-stable peg with camera agreement, acceptable XY/bottom-height/yaw, and residual velocity outside the limits may receive up to two extra 0.9 s observation windows before re-grasping. Each window repeats the full physical checks, including uprightness, and the camera checks; success criteria remain unchanged.
 
 GUI work is independent of the control curve: viewer synchronization is capped at 30 Hz by wall time, keyboard events at 50 Hz, and expensive live RGB-D panel rendering at a configurable maximum of 4 Hz by default. A cooldown after a rendered panel leaves time for physics on software-rendered systems. GUI playback still targets ordinary real time, while autonomous perception captures and recorded simulation frames keep their own schedules. `--camera-fps 2` reduces live panel work on weaker machines. Existing Python processes must be restarted to load these changes.
 

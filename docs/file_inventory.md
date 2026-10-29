@@ -1,8 +1,10 @@
 # File inventory
 
-172 tracked project files. The virtual environment, debug runs, and large MP4 recordings are intentionally excluded from Git.
+175 tracked project files. The virtual environment, debug runs, and large MP4 recordings are intentionally excluded from Git.
 
 The current local demo is `results/demo_fast.mp4`; its tracked manifest is `results/performance/demo/video_manifest.json`. The original `results/demo_final.mp4` and `results/evaluation/` measurements remain as historical references.
+
+For the complete history of problems and fixes, read [the development journal](development_journal.md). For step-by-step collision and object-finding diagnosis, read [the recovery guide](collision_and_perception_guide.md).
 
 - [.github/workflows/test.yml](../.github/workflows/test.yml)
 - [.gitignore](../.gitignore)
@@ -16,7 +18,10 @@ The current local demo is `results/demo_fast.mp4`; its tracked manifest is `resu
 - [config/robot.yaml](../config/robot.yaml)
 - [config/simulation.yaml](../config/simulation.yaml)
 - [docs/architecture.md](../docs/architecture.md)
+- [docs/collision_and_perception_guide.md](../docs/collision_and_perception_guide.md)
 - [docs/demo_guide.md](../docs/demo_guide.md)
+- [docs/development_journal.md](../docs/development_journal.md)
+- [docs/evidence/development_failures.json](../docs/evidence/development_failures.json)
 - [docs/file_inventory.md](../docs/file_inventory.md)
 - [docs/implementation_plan.md](../docs/implementation_plan.md)
 - [docs/setup.md](../docs/setup.md)
