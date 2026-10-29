@@ -2,9 +2,12 @@
 
 Validated platform: Ubuntu 22.04.4 LTS, x86-64, Python 3.10.12. No system Python packages were changed. The project uses a local virtual environment.
 
+The project is grouped locally under `TEAM ROCKET/TASK1_tri-wizard_peg_trial`; the inner directory is the Git repository root. The folder name contains a space, so quote that path in shell commands. For a fresh checkout, run from the intended workspace parent:
+
 ```bash
-git clone https://github.com/anjilshah/tri-wizard-peg-trial.git
-cd tri-wizard-peg-trial
+mkdir -p "TEAM ROCKET"
+git clone https://github.com/anjilshah/tri-wizard-peg-trial.git "TEAM ROCKET/TASK1_tri-wizard_peg_trial"
+cd "TEAM ROCKET/TASK1_tri-wizard_peg_trial"
 python3 -m venv .venv
 .venv/bin/python -m pip install -r requirements-lock.txt
 .venv/bin/python -m pip install --no-build-isolation --no-deps -e .
@@ -13,13 +16,28 @@ python3 -m venv .venv
 bash launch/run_autonomy.sh --headless --seed 0
 ```
 
-The clone command becomes usable after the owner approves publication and the repository is created. Until then, use the prepared local checkout or copy the complete project directory excluding `.venv/` and generated logs.
+The owner has already approved public repository creation and upload. Publication has not yet been verified; the clone command becomes usable after the remote repository exists and its contents are uploaded. Until then, use the prepared local checkout. It includes the original Git history, virtual environment, documentation, measured results, and local demo videos.
+
+For the existing checkout, enter it from its workspace parent and run directly:
+
+```bash
+cd "TEAM ROCKET/TASK1_tri-wizard_peg_trial"
+bash launch/run_autonomy.sh --headless --seed 0
+```
+
+The virtual environment and editable-package paths have been repaired for this move. For a different copied/moved checkout, recreate a local environment from the lockfile rather than assuming another environment's absolute launcher paths remain valid. Do not copy `.venv/` as part of a fresh-machine installation.
 
 Python venv support, Mesa/OpenGL/EGL libraries, and a working desktop display are host prerequisites. If absent, an Ubuntu administrator can install `python3-venv libgl1 libegl1-mesa libglfw3`. Installation of system packages is a separate privileged operation; it was not needed or performed here. OpenCV GUI mode additionally needs a working Qt/X11 or Wayland/XWayland environment. Headless rendering uses EGL and does not need a display server.
 
 The robot is vendored, so normal setup does not contact Interbotix or install ROS. To restore missing robot files, run `.venv/bin/python scripts/fetch_robot.py`. The pinned revision and SHA-256 hashes are recorded in `simulation/robots/wx250s/provenance.json`. The fetcher refuses to overwrite local modifications to upstream files.
 
-Run launchers from any directory by supplying their absolute path; they resolve the repository root and `.venv` themselves. From an activated environment, `peg-sort autonomy --headless --seed 0` is equivalent. This is an editable source installation; keep configuration and asset directories beside the source. Set `PEG_SORTING_ROOT` if using a different checkout location.
+Run launchers from any directory by supplying their quoted path; they resolve the repository root and `.venv` themselves. From the workspace parent, for example:
+
+```bash
+bash "TEAM ROCKET/TASK1_tri-wizard_peg_trial/launch/run_autonomy.sh" --headless --seed 0
+```
+
+From an activated environment, `peg-sort autonomy --headless --seed 0` is equivalent. This is an editable source installation; keep configuration and asset directories beside the source. Set `PEG_SORTING_ROOT` if using a different checkout location.
 
 The six direct dependency versions are pinned in `requirements.txt`; `requirements-lock.txt` also pins transitive dependencies. The tested MuJoCo wheel includes its own simulator library. To inspect the environment:
 

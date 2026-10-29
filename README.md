@@ -14,7 +14,7 @@ The original five-trial controller averaged **228.862 simulated seconds**. The u
 
 Current measurements: [CSV](results/performance/trials.csv), [summary](results/performance/summary.json), and per-trial `episode.json` files under `results/performance/`. The original [CSV](results/evaluation/trials.csv) and [summary](results/evaluation/summary.json) remain as the historical baseline. Physical insertion, release, alignment, stability, overhead top-face height, and angled-camera height must all pass. Near-socket positions alone fail verification.
 
-The automated suite currently contains **61 passing tests** (8.79 seconds in the latest run), including a complete autonomous episode, rendered camera calibration checks, physical socket tests, continuous-path derivative/limit checks, actual collision rejection, GUI refresh pacing, and interruption of active keyboard-commanded motion. Simulation, vision, and teleoperation GUI launchers were opened and closed successfully. A complete autonomous GUI run verified all four placements in **90.01 wall seconds** (89.894 simulated seconds). A GLFW Wayland window-position warning is harmless in this environment.
+The automated suite currently contains **61 passing tests** (8.79 seconds in the saved validation run), including a complete autonomous episode, rendered camera calibration checks, physical socket tests, continuous-path derivative/limit checks, actual collision rejection, GUI refresh pacing, and interruption of active keyboard-commanded motion. Simulation, vision, and teleoperation GUI launchers were opened and closed successfully. A complete autonomous GUI run verified all four placements in **90.01 wall seconds** (89.894 simulated seconds). A GLFW Wayland window-position warning is harmless in this environment.
 
 ## Implemented features
 
@@ -32,13 +32,26 @@ The automated suite currently contains **61 passing tests** (8.79 seconds in the
 
 ## Quick setup
 
+The requested local workspace layout is:
+
+```text
+TEAM ROCKET/
+└── TASK1_tri-wizard_peg_trial/    # Git repository and project root
+```
+
+For a fresh checkout, run the following from the directory that should contain `TEAM ROCKET`. Repository creation and public upload have owner approval; the clone command becomes usable after publication is verified.
+
 ```bash
-cd tri-wizard-peg-trial
+mkdir -p "TEAM ROCKET"
+git clone https://github.com/anjilshah/tri-wizard-peg-trial.git "TEAM ROCKET/TASK1_tri-wizard_peg_trial"
+cd "TEAM ROCKET/TASK1_tri-wizard_peg_trial"
 python3 -m venv .venv
 .venv/bin/python -m pip install -r requirements-lock.txt
 .venv/bin/python -m pip install --no-build-isolation --no-deps -e .
 .venv/bin/python -m pip check
 ```
+
+The existing local project has already been moved into this layout, including its Git history, virtual environment, documentation, measured results, and local recordings. Enter `"TEAM ROCKET/TASK1_tri-wizard_peg_trial"` from its workspace parent to use it. Quote paths containing `TEAM ROCKET` because the folder name contains a space. The local grouping folder does not change the intended GitHub repository name, `anjilshah/tri-wizard-peg-trial`.
 
 The source checkout includes the licensed robot meshes. If they are missing, run `.venv/bin/python scripts/fetch_robot.py`. Downloads use a pinned upstream revision, and the script refuses to overwrite modified upstream files.
 
@@ -46,13 +59,19 @@ On Ubuntu, OpenGL/EGL libraries and a display are needed for GUI rendering. Head
 
 ## Launch commands
 
-From the repository root:
+From `"TEAM ROCKET/TASK1_tri-wizard_peg_trial"`, the repository root:
 
 ```bash
 bash launch/run_simulation.sh
 bash launch/run_vision.sh
 bash launch/run_teleop.sh
 bash launch/run_autonomy.sh
+```
+
+From its workspace parent, the equivalent quoted launcher path is:
+
+```bash
+bash "TEAM ROCKET/TASK1_tri-wizard_peg_trial/launch/run_autonomy.sh"
 ```
 
 Simulation and teleoperation show the MuJoCo viewer. Vision, teleoperation, and autonomous GUI modes also show overhead/angled RGB and depth panels. Click the viewer or camera window to give it keyboard focus. Close the viewer to exit. GUI runs pace toward real time; actual speed depends on rendering performance.
@@ -167,7 +186,7 @@ bash launch/run_autonomy.sh --headless --seed 0 \
 
 The video shows the overview, overhead detections with estimated positions, angled RGB, metric depth previews, grasp disclosure, simulation time, and final verified outcome. The updated controller's local recording is **`results/demo_fast.mp4`**, with its episode artifacts under `results/performance/demo/`. Recording wall time includes rendering and encoding and differs from headless timing. The earlier `results/demo_final.mp4` records the original slower controller and is retained as a historical baseline. Large generated recordings are excluded from Git; see [demo guide](docs/demo_guide.md) for playback, public upload, and narration instructions.
 
-The repository is prepared locally for `anjilshah/tri-wizard-peg-trial`. **No public repository, push, or video upload is performed without approval.** GitHub CLI was unavailable during setup; the connected GitHub API returned 404 for the target repository, which can mean missing or inaccessible.
+The owner has approved creating the public repository `anjilshah/tri-wizard-peg-trial` and uploading the project. **Repository creation and upload have not yet been verified.** Local files and commits are prepared in `TEAM ROCKET/TASK1_tri-wizard_peg_trial`; a public repository link or uploaded-video link should be reported only after the corresponding action is confirmed.
 
 ## Limitations
 
