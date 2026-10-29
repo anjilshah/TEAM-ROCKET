@@ -40,4 +40,4 @@ For a live narrated demonstration, use Ubuntu's existing screen recorder or OBS 
 
 ## Publication gate
 
-Obtain the owner's confirmation before creating a public GitHub repository, pushing files, or uploading the video. After approval, create `anjilshah/tri-wizard-peg-trial`, push the local `main` branch, and upload the generated MP4 to the chosen public video host or a GitHub release. Add the actual public links to README after they exist. No URL should claim a demo has been published before upload is verified.
+The owner approved source publication, and the workspace is now public at [anjilshah/TEAM-ROCKET](https://github.com/anjilshah/TEAM-ROCKET), with Task 1 in its own subfolder. The generated MP4 remains local and excluded from source control. A separate public video upload can use the chosen host or a GitHub release; add its actual link only after that upload is verified. The repository link demonstrates source availability and does not imply that a public video already exists.

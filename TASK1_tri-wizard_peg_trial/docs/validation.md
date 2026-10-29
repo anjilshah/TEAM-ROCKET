@@ -16,7 +16,7 @@ Validated on 29 October 2026, Ubuntu 22.04.4 LTS x86-64, Python 3.10.12. Simulat
 - Five randomized episodes, seeds 0–4: **20/20 placements, 5/5 complete trials**, all initial detections/colors/classifications correct. Actual CSV and JSON are in `results/evaluation/`.
 - Headless simulation and vision launch scripts ran successfully. GUI simulation, vision (both RGB-D panels), and teleoperation launchers opened and closed successfully with harmless Wayland window-position/Qt warnings. Physical human keypress rehearsal remains separate from tested command handling.
 - Recorded demo: `results/demo_final.mp4`, actual seed-0 execution with 4/4 verified placements, 1,375 frames at 1200×860 and 6 fps, 229.167 s playback. Its episode took 228.948 simulated seconds and 276.233 wall seconds including recording. The video manifest records its SHA-256 hash; the large MP4 remains local and ignored by Git.
-- A GitHub Actions workflow is prepared but has not run remotely, since no repository has been published.
+- The public source workspace is [anjilshah/TEAM-ROCKET](https://github.com/anjilshah/TEAM-ROCKET). Its first hosted workflow passed all 61 tests in 9.82 s, then exposed a launcher setup mismatch (`Missing .venv`). The workflow was corrected to create/use the project virtual environment consistently. The [active workflow history](https://github.com/anjilshah/TEAM-ROCKET/actions/workflows/task1.yml) provides the current hosted result.
 
 ## Measured evaluation
 
@@ -66,4 +66,4 @@ Failed development runs were not counted in the final five-trial evaluation. The
 
 Implemented and verified: simulator, required robot, physical pegs/sockets, both sensors, perception, localization, full-pose IK, conservative planning, assisted gripper, autonomous transport/insertion/release, physical/camera verification, keyboard command handlers, evaluation, tests, executable launchers, setup/docs, and local repository preparation.
 
-Explicit limitations: assisted weld grasp; perfect simulated calibration/depth; small tested source region; upright fixtures; no global obstacle planner; no hardware validation; no guarantee every wrong shape is mechanically rejected; manual human keypress rehearsal pending. Public GitHub/video publication requires owner approval and has not occurred.
+Explicit limitations: assisted weld grasp; perfect simulated calibration/depth; small tested source region; upright fixtures; no global obstacle planner; no hardware validation; no guarantee every wrong shape is mechanically rejected; manual human keypress rehearsal pending. Source publication was owner-approved and verified at TEAM-ROCKET. Generated MP4 recordings remain local and have not been uploaded publicly.

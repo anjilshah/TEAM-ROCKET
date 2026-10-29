@@ -16,8 +16,9 @@ jobs:
           cache: pip
           cache-dependency-path: TASK1_tri-wizard_peg_trial/requirements-lock.txt
       - run: sudo apt-get update && sudo apt-get install -y libegl1-mesa libgl1
-      - run: python -m pip install -r requirements-lock.txt
-      - run: python -m pip install --no-build-isolation --no-deps -e .
-      - run: python -m pip check
-      - run: pytest -q
+      - run: python -m venv .venv
+      - run: .venv/bin/python -m pip install -r requirements-lock.txt
+      - run: .venv/bin/python -m pip install --no-build-isolation --no-deps -e .
+      - run: .venv/bin/python -m pip check
+      - run: .venv/bin/python -m pytest -q
       - run: bash launch/run_autonomy.sh --headless --seed 1

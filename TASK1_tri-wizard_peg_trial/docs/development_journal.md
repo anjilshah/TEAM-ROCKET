@@ -8,7 +8,7 @@ Three kinds of entries are distinguished:
 - **Integration decision or prevented risk:** a compatibility issue was investigated or handled before it caused a failed run. These are not presented as errors that happened.
 - **Remaining limitation:** the implementation still has this boundary; suggestions for extending it are future work.
 
-The code and measured results are local. Public GitHub/video publication has not occurred. No physical robot, physical RGB-D camera, ROS installation, or hardware experiment was involved.
+The code and measured results are published in [anjilshah/TEAM-ROCKET](https://github.com/anjilshah/TEAM-ROCKET), under `TASK1_tri-wizard_peg_trial/`, with a complete local checkout retained. Generated MP4 recordings remain local. No physical robot, physical RGB-D camera, ROS installation, or hardware experiment was involved.
 
 ## Quick issue index
 
@@ -30,7 +30,8 @@ The code and measured results are local. Public GitHub/video publication has not
 | Cubic path could exceed a joint limit between valid nodes | Reproduced review finding | Check exact spline position extrema as well as collision samples |
 | Settling timeout could allow residual arm velocity | Review finding | Reject motion if arm velocity is still too high at the end of the settling budget |
 | A seated hexagon was re-grasped for residual contact velocity | Observed intermediate tuning failure | Re-observe through bounded settling windows using the same strict success criteria before re-grasping |
-| Remote publication was unavailable/not authorized | Remaining external step | Local commits and upload-ready artifacts; request owner approval before publication |
+| Remote publication initially lacked a supported creation path | Earlier obstacle, resolved | Owner approval, GitHub CLI authentication, public TEAM-ROCKET creation, and verified source push |
+| First GitHub CI passed tests but could not launch autonomy | Observed remote CI failure | Create and use the project `.venv` consistently in the workflow, matching the launcher's requirements |
 
 ## 1. Environment and dependencies
 
@@ -200,7 +201,7 @@ This is separate from the one bounded grasp retry. A held-object motion failure 
 | Configuration | Many live settings plus some documented nominal values | Audit where each key is consumed before changing it; the recovery guide maps the coupled settings |
 | Evaluation | Five seeds, ±6 mm source-cell jitter, yaw within ±0.35 rad | Collect broader independent trials with unchanged success criteria before claiming general robustness |
 | Teleoperation | GUI launch, command handlers, P/L macros, and stop behavior tested | Rehearse actual human keypresses/focus before the public demo |
-| Publication | Local commits, documentation, measurements, actual recordings | Owner approval and a verified public upload are still needed |
+| Publication | Source, assets, documentation, tests, measurements, and original history uploaded to TEAM-ROCKET | Generated video recordings remain local; a separate public video link requires a verified upload |
 
 ## 14. How to document the next problem
 
@@ -249,6 +250,16 @@ The measured results above are retained evidence, not new experiments run merely
 | Teleoperation | Added movement/gripper/P/L commands and simulation stop; checked command handlers, macro behavior, and GUI launch | [Keyboard control](../src/peg_sorting/control/teleop_keyboard.py), [teleoperation tests](../tests/test_teleop.py) |
 | Evaluation and debugging | Ran failing diagnostics, corrected demonstrated causes, ran the recorded 61-test suite and five-seed trials, measured speed before/after, and completed a GUI run | [Failure extracts](evidence/development_failures.json), [comparison](../results/performance/comparison.json), [JUnit report](../results/validation/pytest.xml) |
 | Documentation and demonstration | Wrote setup/architecture/run/recovery instructions and retained actual original/faster simulation videos with measurements and hashes | [Demo guide](demo_guide.md), [faster-video manifest](../results/performance/demo/video_manifest.json) |
-| GitHub preparation | Created local commits, selected the requested remote, prepared CI and reviewable artifacts; retained the approval gate for public publication | [GitHub workflow](../.github/workflows/test.yml), [publication status](troubleshooting.md) |
+| GitHub publication | Created the owner-approved public TEAM-ROCKET workspace, preserved task history, uploaded ordinary task files, and verified the remote tree and commit | [Active workspace workflow](../../.github/workflows/task1.yml), [publication status](troubleshooting.md) |
 
-Manual keyboard rehearsal, broader robustness trials, friction-only grasp validation, automatic global detours/active object search, and public upload remain separate follow-up work. They are not implied by the completed simulation pipeline.
+Manual keyboard rehearsal, broader robustness trials, friction-only grasp validation, automatic global detours/active object search, and public video upload remain separate follow-up work. They are not implied by the completed simulation pipeline.
+
+## Publication and the first GitHub CI run
+
+The owner requested the parent `TEAM ROCKET` folder as a new repository. The project was published to `anjilshah/TEAM-ROCKET`, with Task 1 as an ordinary subfolder rather than a submodule. Original task commits remain ancestors of the workspace branch, and the former task Git metadata was preserved locally as an ignored backup.
+
+The [first hosted run](https://github.com/anjilshah/TEAM-ROCKET/actions/runs/40762835907) installed dependencies, passed `pip check`, and passed all **61 tests in 9.82 seconds** on the runner. Its separate headless launcher step then exited with `Missing .venv`.
+
+**Cause:** the initial workflow installed into the runner's global Python while the launcher intentionally expects the project's `.venv`. Passing the globally installed pytest suite did not prove that the environment-aware launcher was ready.
+
+**Correction:** the workflow now creates `.venv`, installs and checks dependencies with `.venv/bin/python`, runs `.venv/bin/pytest`, and invokes the existing launcher from the Task 1 working directory. The workspace-level workflow is active; the task-local template is kept consistent. The [workflow history](https://github.com/anjilshah/TEAM-ROCKET/actions/workflows/task1.yml) records the hosted outcomes.

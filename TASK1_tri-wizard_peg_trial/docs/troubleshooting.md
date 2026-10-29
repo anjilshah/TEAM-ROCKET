@@ -62,4 +62,6 @@ Click the viewer or camera panel. Commands are discrete 1 cm steps. P/L are visi
 
 ## Publication
 
-Nothing has been uploaded. The target GitHub repository returned 404 through the connector; it may not exist or may be inaccessible. GitHub CLI is not installed here. After owner approval, create the public repository in GitHub, authenticate Git, and push the prepared local branch. Never include `.venv`, local credentials, or large temporary recordings.
+The whole-workspace source repository is public at [anjilshah/TEAM-ROCKET](https://github.com/anjilshah/TEAM-ROCKET). Task 1 is under `TASK1_tri-wizard_peg_trial/`. The original single-task repository name was superseded by the owner's workspace request.
+
+Run Git commands from the parent `TEAM ROCKET` directory. The original task Git history is integrated into the workspace history, and its former Git metadata is retained locally in the ignored `.task1-git-backup/` directory. Source, model assets, documentation, tests, and measured results are uploaded. `.venv`, local credentials/caches, and generated recordings remain excluded; no public video URL has been claimed.

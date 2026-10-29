@@ -15,7 +15,7 @@ python3 -m venv .venv
 bash launch/run_autonomy.sh --headless --seed 0
 ```
 
-The owner has already approved creating the public repository `anjilshah/TEAM-ROCKET` and uploading the whole workspace, with this Python project as a subfolder. Publication has not yet been verified; the clone command becomes usable after the remote repository exists and its contents are uploaded. Until then, use the prepared local checkout. It includes the original Git history, virtual environment, documentation, measured results, and local demo videos. Local environments and large generated recordings remain excluded from Git.
+The public repository is [anjilshah/TEAM-ROCKET](https://github.com/anjilshah/TEAM-ROCKET), with this Python project as a normal subfolder. The source upload and original commit history have been verified. The existing local checkout additionally retains its repaired virtual environment and local demo videos; those generated files are excluded from Git. A fresh clone installs its own environment using the commands above.
 
 For the existing checkout, enter it from its workspace parent and run directly:
 

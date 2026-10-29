@@ -32,7 +32,7 @@
   ],
   "verified_placements": 20,
   "attempted_placements": 20,
-  "public_publication": false,
+  "public_publication": true,
   "manual_human_keypress_rehearsal": false,
   "csv_roundtrip": "passed",
   "demo_video": "../performance/demo/video_manifest.json",
@@ -43,5 +43,7 @@
     "verified_placements": 4,
     "simulation_seconds": 89.894,
     "wall_seconds": 90.01
-  }
+  },
+  "public_repository_url": "https://github.com/anjilshah/TEAM-ROCKET",
+  "published_project_directory": "TASK1_tri-wizard_peg_trial"
 }

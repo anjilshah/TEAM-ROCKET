@@ -39,7 +39,7 @@ TEAM ROCKET/                       # Git repository and workspace root
 └── TASK1_tri-wizard_peg_trial/    # Python project root
 ```
 
-For a fresh checkout, run the following from the directory that should contain `TEAM ROCKET`. Repository creation and public upload have owner approval; the clone command becomes usable after publication is verified.
+For a fresh checkout, run the following from the directory that should contain `TEAM ROCKET`. The public workspace repository is [anjilshah/TEAM-ROCKET](https://github.com/anjilshah/TEAM-ROCKET).
 
 ```bash
 git clone https://github.com/anjilshah/TEAM-ROCKET.git "TEAM ROCKET"
@@ -187,7 +187,7 @@ bash launch/run_autonomy.sh --headless --seed 0 \
 
 The video shows the overview, overhead detections with estimated positions, angled RGB, metric depth previews, grasp disclosure, simulation time, and final verified outcome. The updated controller's local recording is **`results/demo_fast.mp4`**, with its episode artifacts under `results/performance/demo/`. Recording wall time includes rendering and encoding and differs from headless timing. The earlier `results/demo_final.mp4` records the original slower controller and is retained as a historical baseline. Large generated recordings are excluded from Git; see [demo guide](docs/demo_guide.md) for playback, public upload, and narration instructions.
 
-The owner has approved creating the public repository `anjilshah/TEAM-ROCKET` and uploading the whole `TEAM ROCKET` workspace, with `TASK1_tri-wizard_peg_trial/` as a subfolder. **Repository creation and upload have not yet been verified.** The project files are prepared locally; large generated recordings remain excluded from Git. A public repository link or uploaded-video link should be reported only after the corresponding action is confirmed.
+The public [TEAM-ROCKET workspace](https://github.com/anjilshah/TEAM-ROCKET) has been created and its source upload verified. [Task 1](https://github.com/anjilshah/TEAM-ROCKET/tree/main/TASK1_tri-wizard_peg_trial) is a normal subfolder containing the source, licensed robot assets, configuration, tests, documentation, and measured results. Original commit history is preserved. Local environments, caches, and generated recordings remain excluded from Git; the MP4 demo has not been uploaded publicly.
 
 ## Limitations
 
