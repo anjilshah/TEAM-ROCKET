@@ -1,20 +1,17 @@
-.venv/
-__pycache__/
-*.py[cod]
-*.egg-info/
-.pytest_cache/
-build/
-dist/
-.env
-*.log
-MUJOCO_LOG.TXT
-results/runs/
-results/*.mp4
-results/*.avi
-.vscode/
-/results/*
-!/results/.gitkeep
-!/results/evaluation/
-!/results/demo_final/
-!/results/validation/
-!/results/performance/
+# Local environments, caches, and credentials are not publication artifacts.
+**/.venv/
+**/__pycache__/
+**/.pytest_cache/
+**/*.egg-info/
+**/.env
+**/*.log
+**/MUJOCO_LOG.TXT
+**/.vscode/
+**/build/
+**/dist/
+# Preserve the original task repository locally; publish its files as regular files.
+TASK1_tri-wizard_peg_trial/.git/
+.task1-git-backup/
+# Reproducible demo recordings remain local, as in the task's existing ignore rules.
+**/*.mp4
+**/*.avi
