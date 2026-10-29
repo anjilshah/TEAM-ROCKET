@@ -1,0 +1,15 @@
+{
+  "path": "results/demo_final.mp4",
+  "sha256": "bac47a3d36d8ecf57e535cb23be2285dd15f632337385516677afbee483176e3",
+  "bytes": 17588496,
+  "width": 1200,
+  "height": 860,
+  "fps": 6.0,
+  "frames": 1375,
+  "duration_seconds": 229.16666666666666,
+  "seed": 0,
+  "verified_placements": 4,
+  "simulation_seconds": 228.94800000036508,
+  "wall_seconds": 276.2333799190001,
+  "public_upload": false
+}

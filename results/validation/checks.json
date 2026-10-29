@@ -1,0 +1,39 @@
+{
+  "date": "2026-10-29",
+  "python": "3.10.12",
+  "mujoco": "3.3.5",
+  "pytest": {
+    "passed": 51,
+    "failed": 0,
+    "skipped": 0,
+    "seconds": 23.02,
+    "junit": "pytest.xml"
+  },
+  "dependency_check": "No broken requirements found",
+  "compileall": "passed",
+  "shell_syntax": "passed",
+  "upstream_hashes_checked": 15,
+  "xml_files_compiled": 6,
+  "gui_smoke_modes": [
+    "simulation",
+    "vision",
+    "teleop"
+  ],
+  "headless_smoke_modes": [
+    "simulation",
+    "vision"
+  ],
+  "evaluation_seeds": [
+    0,
+    1,
+    2,
+    3,
+    4
+  ],
+  "verified_placements": 20,
+  "attempted_placements": 20,
+  "public_publication": false,
+  "manual_human_keypress_rehearsal": false,
+  "csv_roundtrip": "passed",
+  "demo_video": "../demo_final/video_manifest.json"
+}

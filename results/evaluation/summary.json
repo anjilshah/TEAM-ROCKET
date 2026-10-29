@@ -1,0 +1,15 @@
+{
+  "trials": 5,
+  "seeds": [
+    0,
+    1,
+    2,
+    3,
+    4
+  ],
+  "placement_success_rate": 1.0,
+  "complete_trial_rate": 1.0,
+  "mean_simulation_seconds": 228.86160000036472,
+  "mean_wall_seconds": 10.148808154200196,
+  "mean_pose_error_m": 0.000281535768529153
+}

@@ -1,0 +1,184 @@
+{
+  "seed": 0,
+  "robot": "WidowX-250S 6DOF",
+  "grasp_mechanism": "proximity-gated weld with actuated fingers",
+  "detected_pegs": 4,
+  "correct_colors": 4,
+  "correct_classifications": 4,
+  "detected_sockets": 4,
+  "pose_errors_m": {
+    "square": 0.00046280401547729315,
+    "triangle": 0.00021850683702107876,
+    "circle": 0.0001559068004407946,
+    "hexagon": 0.0002529874942493291
+  },
+  "placements": [
+    {
+      "shape": "square",
+      "success": true,
+      "attempts": 1,
+      "verification": {
+        "success": true,
+        "physics": {
+          "success": true,
+          "released": true,
+          "xy_error_m": 0.0007725731701047037,
+          "bottom_error_m": 0.00021551084043247397,
+          "orientation_error_rad": 0.00011832061553473938,
+          "linear_speed_m_s": 1.3662464609336395e-15,
+          "angular_speed_rad_s": 9.778990860645391e-16,
+          "stable": true
+        },
+        "camera": {
+          "success": true,
+          "overhead_top": [
+            0.1896444772978551,
+            0.06391000386102394,
+            0.10178446769714355
+          ],
+          "angled_top_z_m": 0.10178449512501588,
+          "expected_top_z_m": 0.10200009059906007
+        }
+      },
+      "simulation_seconds": 55.70800000002285
+    },
+    {
+      "shape": "triangle",
+      "success": true,
+      "attempts": 1,
+      "verification": {
+        "success": true,
+        "physics": {
+          "success": true,
+          "released": true,
+          "xy_error_m": 0.0008558394086938391,
+          "bottom_error_m": 0.00011849627000075878,
+          "orientation_error_rad": 0.009970466789114951,
+          "linear_speed_m_s": 2.6205894770171375e-05,
+          "angular_speed_rad_s": 0.0004814073902724903,
+          "stable": true
+        },
+        "camera": {
+          "success": true,
+          "overhead_top": [
+            0.33961704102210016,
+            0.06425782527881303,
+            0.10189042091369638
+          ],
+          "angled_top_z_m": 0.10187790802652777,
+          "expected_top_z_m": 0.10200009059906007
+        }
+      },
+      "simulation_seconds": 55.08799999989893
+    },
+    {
+      "shape": "circle",
+      "success": true,
+      "attempts": 1,
+      "verification": {
+        "success": true,
+        "physics": {
+          "success": true,
+          "released": true,
+          "xy_error_m": 0.0009309353377276624,
+          "bottom_error_m": 8.78922936330042e-05,
+          "orientation_error_rad": 0.0,
+          "linear_speed_m_s": 0.00014536270044147184,
+          "angular_speed_rad_s": 0.002913174825287477,
+          "stable": true
+        },
+        "camera": {
+          "success": true,
+          "overhead_top": [
+            0.19002420084313665,
+            0.2038709104764674,
+            0.10191237926483154
+          ],
+          "angled_top_z_m": 0.1019122234175967,
+          "expected_top_z_m": 0.10200009059906007
+        }
+      },
+      "simulation_seconds": 58.952000000163494
+    },
+    {
+      "shape": "hexagon",
+      "success": true,
+      "attempts": 1,
+      "verification": {
+        "success": true,
+        "physics": {
+          "success": true,
+          "released": true,
+          "xy_error_m": 0.00219790452818023,
+          "bottom_error_m": 0.00017676033096886666,
+          "orientation_error_rad": 0.0008292278229062866,
+          "linear_speed_m_s": 0.0014238054088379346,
+          "angular_speed_rad_s": 0.025691053906687335,
+          "stable": true
+        },
+        "camera": {
+          "success": true,
+          "overhead_top": [
+            0.3382728321781056,
+            0.2032627384929744,
+            0.10183382034301758
+          ],
+          "angled_top_z_m": 0.10182797551654403,
+          "expected_top_z_m": 0.10200009059906007
+        }
+      },
+      "simulation_seconds": 58.600000000279806
+    }
+  ],
+  "successful_grasps": 4,
+  "successful_placements": 4,
+  "failed_placements": 0,
+  "unattempted_placements": 0,
+  "final_physical_verification": {
+    "square": {
+      "success": true,
+      "released": true,
+      "xy_error_m": 0.0007725731701047037,
+      "bottom_error_m": 0.00021551084043247397,
+      "orientation_error_rad": 0.00011832061553473938,
+      "linear_speed_m_s": 1.372602934345091e-15,
+      "angular_speed_rad_s": 1.0050765898258854e-15,
+      "stable": true
+    },
+    "triangle": {
+      "success": true,
+      "released": true,
+      "xy_error_m": 0.0008489356921172709,
+      "bottom_error_m": 0.0001295927234536958,
+      "orientation_error_rad": 0.009998531897295049,
+      "linear_speed_m_s": 1.527229643302422e-05,
+      "angular_speed_rad_s": 0.00028587175241099455,
+      "stable": true
+    },
+    "circle": {
+      "success": true,
+      "released": true,
+      "xy_error_m": 0.0009310964662431481,
+      "bottom_error_m": 8.787482068916934e-05,
+      "orientation_error_rad": 0.0,
+      "linear_speed_m_s": 0.00019238447366111305,
+      "angular_speed_rad_s": 0.0038588875641197644,
+      "stable": true
+    },
+    "hexagon": {
+      "success": true,
+      "released": true,
+      "xy_error_m": 0.00219790452818023,
+      "bottom_error_m": 0.00017676033096886666,
+      "orientation_error_rad": 0.0008292278229062866,
+      "linear_speed_m_s": 0.0014238054088379346,
+      "angular_speed_rad_s": 0.025691053906687335,
+      "stable": true
+    }
+  },
+  "success": true,
+  "success_rate": 1.0,
+  "simulation_seconds": 228.94800000036508,
+  "wall_seconds": 11.152757431999817,
+  "average_simulation_seconds_per_peg": 57.23700000009127
+}

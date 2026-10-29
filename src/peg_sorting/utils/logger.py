@@ -24,6 +24,6 @@ def save_csv(path, rows):
     if not rows:
         raise ValueError("No experiment rows")
     with path.open("w", newline="") as stream:
-        writer = csv.DictWriter(stream, fieldnames=list(rows[0]))
+        writer = csv.DictWriter(stream, fieldnames=list(rows[0]), lineterminator="\n")
         writer.writeheader()
         writer.writerows(rows)
