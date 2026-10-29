@@ -2,11 +2,10 @@
 
 Validated platform: Ubuntu 22.04.4 LTS, x86-64, Python 3.10.12. No system Python packages were changed. The project uses a local virtual environment.
 
-The project is grouped locally under `TEAM ROCKET/TASK1_tri-wizard_peg_trial`; the inner directory is the Git repository root. The folder name contains a space, so quote that path in shell commands. For a fresh checkout, run from the intended workspace parent:
+The Git repository and workspace root is `TEAM ROCKET/`; the Python project root is its `TASK1_tri-wizard_peg_trial/` subfolder. The workspace folder name contains a space, so quote that path in shell commands. For a fresh checkout, run from the directory that should contain the workspace:
 
 ```bash
-mkdir -p "TEAM ROCKET"
-git clone https://github.com/anjilshah/tri-wizard-peg-trial.git "TEAM ROCKET/TASK1_tri-wizard_peg_trial"
+git clone https://github.com/anjilshah/TEAM-ROCKET.git "TEAM ROCKET"
 cd "TEAM ROCKET/TASK1_tri-wizard_peg_trial"
 python3 -m venv .venv
 .venv/bin/python -m pip install -r requirements-lock.txt
@@ -16,7 +15,7 @@ python3 -m venv .venv
 bash launch/run_autonomy.sh --headless --seed 0
 ```
 
-The owner has already approved public repository creation and upload. Publication has not yet been verified; the clone command becomes usable after the remote repository exists and its contents are uploaded. Until then, use the prepared local checkout. It includes the original Git history, virtual environment, documentation, measured results, and local demo videos.
+The owner has already approved creating the public repository `anjilshah/TEAM-ROCKET` and uploading the whole workspace, with this Python project as a subfolder. Publication has not yet been verified; the clone command becomes usable after the remote repository exists and its contents are uploaded. Until then, use the prepared local checkout. It includes the original Git history, virtual environment, documentation, measured results, and local demo videos. Local environments and large generated recordings remain excluded from Git.
 
 For the existing checkout, enter it from its workspace parent and run directly:
 
@@ -31,7 +30,7 @@ Python venv support, Mesa/OpenGL/EGL libraries, and a working desktop display ar
 
 The robot is vendored, so normal setup does not contact Interbotix or install ROS. To restore missing robot files, run `.venv/bin/python scripts/fetch_robot.py`. The pinned revision and SHA-256 hashes are recorded in `simulation/robots/wx250s/provenance.json`. The fetcher refuses to overwrite local modifications to upstream files.
 
-Run launchers from any directory by supplying their quoted path; they resolve the repository root and `.venv` themselves. From the workspace parent, for example:
+Run launchers from any directory by supplying their quoted path; they resolve the Python project root and its `.venv` themselves. From the directory containing the workspace, for example:
 
 ```bash
 bash "TEAM ROCKET/TASK1_tri-wizard_peg_trial/launch/run_autonomy.sh" --headless --seed 0

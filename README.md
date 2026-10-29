@@ -35,15 +35,14 @@ The automated suite currently contains **61 passing tests** (8.79 seconds in the
 The requested local workspace layout is:
 
 ```text
-TEAM ROCKET/
-└── TASK1_tri-wizard_peg_trial/    # Git repository and project root
+TEAM ROCKET/                       # Git repository and workspace root
+└── TASK1_tri-wizard_peg_trial/    # Python project root
 ```
 
 For a fresh checkout, run the following from the directory that should contain `TEAM ROCKET`. Repository creation and public upload have owner approval; the clone command becomes usable after publication is verified.
 
 ```bash
-mkdir -p "TEAM ROCKET"
-git clone https://github.com/anjilshah/tri-wizard-peg-trial.git "TEAM ROCKET/TASK1_tri-wizard_peg_trial"
+git clone https://github.com/anjilshah/TEAM-ROCKET.git "TEAM ROCKET"
 cd "TEAM ROCKET/TASK1_tri-wizard_peg_trial"
 python3 -m venv .venv
 .venv/bin/python -m pip install -r requirements-lock.txt
@@ -51,7 +50,7 @@ python3 -m venv .venv
 .venv/bin/python -m pip check
 ```
 
-The existing local project has already been moved into this layout, including its Git history, virtual environment, documentation, measured results, and local recordings. Enter `"TEAM ROCKET/TASK1_tri-wizard_peg_trial"` from its workspace parent to use it. Quote paths containing `TEAM ROCKET` because the folder name contains a space. The local grouping folder does not change the intended GitHub repository name, `anjilshah/tri-wizard-peg-trial`.
+The existing local project has already been moved into this layout, including its Git history, virtual environment, documentation, measured results, and local recordings. The intended GitHub repository is `anjilshah/TEAM-ROCKET`, containing the whole `TEAM ROCKET` workspace with this project as a subfolder. Enter `"TEAM ROCKET/TASK1_tri-wizard_peg_trial"` from the directory containing the workspace to use the Python project. Quote paths containing `TEAM ROCKET` because the folder name contains a space. Local environments and large generated recordings remain excluded from Git.
 
 The source checkout includes the licensed robot meshes. If they are missing, run `.venv/bin/python scripts/fetch_robot.py`. Downloads use a pinned upstream revision, and the script refuses to overwrite modified upstream files.
 
@@ -59,7 +58,7 @@ On Ubuntu, OpenGL/EGL libraries and a display are needed for GUI rendering. Head
 
 ## Launch commands
 
-From `"TEAM ROCKET/TASK1_tri-wizard_peg_trial"`, the repository root:
+From `"TEAM ROCKET/TASK1_tri-wizard_peg_trial"`, the Python project directory inside the repository:
 
 ```bash
 bash launch/run_simulation.sh
@@ -116,6 +115,8 @@ The required `wx250s` was integrated without substituting another robot. The ven
 The zero-pose official TCP is verified at **(0.458325, 0, 0.36065) m**, and all six joint ranges match the [manufacturer's limits](https://docs.trossenrobotics.com/interbotix_xsarms_docs/specifications/wx250s.html). The official TCP offset is `0.043 + 0.023 + 0.027575 = 0.093575 m` from `gripper_link`. A separate grasp site at 0.108 m comes from the upstream finger contact locations. Body geometry, link transforms, masses, and inertias are retained. Servo gains and feed-forward bias compensation are simulation control choices, not validated physical servo parameters. Details are in [robot integration](simulation/robots/README.md).
 
 ## Architecture and repository
+
+The following paths are relative to the Python project directory, `TASK1_tri-wizard_peg_trial/`, inside the `TEAM ROCKET` repository root.
 
 ```text
 config/                    Colors, robot, cameras, planning, physics
@@ -186,7 +187,7 @@ bash launch/run_autonomy.sh --headless --seed 0 \
 
 The video shows the overview, overhead detections with estimated positions, angled RGB, metric depth previews, grasp disclosure, simulation time, and final verified outcome. The updated controller's local recording is **`results/demo_fast.mp4`**, with its episode artifacts under `results/performance/demo/`. Recording wall time includes rendering and encoding and differs from headless timing. The earlier `results/demo_final.mp4` records the original slower controller and is retained as a historical baseline. Large generated recordings are excluded from Git; see [demo guide](docs/demo_guide.md) for playback, public upload, and narration instructions.
 
-The owner has approved creating the public repository `anjilshah/tri-wizard-peg-trial` and uploading the project. **Repository creation and upload have not yet been verified.** Local files and commits are prepared in `TEAM ROCKET/TASK1_tri-wizard_peg_trial`; a public repository link or uploaded-video link should be reported only after the corresponding action is confirmed.
+The owner has approved creating the public repository `anjilshah/TEAM-ROCKET` and uploading the whole `TEAM ROCKET` workspace, with `TASK1_tri-wizard_peg_trial/` as a subfolder. **Repository creation and upload have not yet been verified.** The project files are prepared locally; large generated recordings remain excluded from Git. A public repository link or uploaded-video link should be reported only after the corresponding action is confirmed.
 
 ## Limitations
 
