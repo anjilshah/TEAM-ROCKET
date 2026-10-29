@@ -1,5 +1,5 @@
-max_joint_speed: 0.65
-max_joint_acceleration: 1.4
+max_joint_speed: 1.2
+max_joint_acceleration: 2.8
 sample_joint_step: 0.025
 position_tolerance: 0.0004
 orientation_tolerance: 0.008
@@ -7,6 +7,11 @@ clearance_z: 0.22
 pregrasp_offset: 0.09
 grasp_below_top: 0.018
 approach_step: 0.008
+approach_speed: 0.09
+tracking_settle_min_seconds: 0.04
+tracking_settle_max_seconds: 0.25
 settle_seconds: 0.3
 placement_speed: 0.035
+insertion_entry_clearance: 0.015
+verification_settle_rechecks: 2
 max_retries: 1

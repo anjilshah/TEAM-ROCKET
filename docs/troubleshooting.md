@@ -12,6 +12,24 @@ Mesa EGL worked in the validated environment without a GPU device. If EGL initia
 
 A GLFW message saying Wayland cannot provide window position was observed during a successful GUI launch. It did not prevent simulation.
 
+## Slow autonomous movement or a choppy viewer
+
+Close the old viewer/process and launch autonomy again after updating the source. An already running Python process keeps its loaded controller code. The current controller executes each Cartesian motion continuously through its 8 mm IK nodes, with one start/stop and adaptive endpoint settling. The older controller stopped and waited 0.25 s at every node. The five-seed mean has decreased from 228.862 to 90.206 simulated seconds, with 20/20 placements in both batches. Current measurements are under `results/performance/`; `results/evaluation/` and `results/demo_final.mp4` preserve the older baseline. The current recording is `results/demo_fast.mp4`.
+
+The MuJoCo viewer and RGB-D panels have separate refresh rates. Viewer synchronization runs at up to 30 Hz; live RGB-D rendering defaults to at most 4 Hz and keyboard polling is independent. On a weaker machine, reduce expensive panel rendering:
+
+```bash
+bash launch/run_autonomy.sh --camera-fps 2
+```
+
+This changes only live display refresh. It does not alter the physics timestep, autonomous perception captures, or recording cadence. For a timing comparison without GUI/recording overhead, run:
+
+```bash
+bash launch/run_autonomy.sh --headless --seed 0 --output results/runs/speed_check
+```
+
+Seed 0 measured 89.894 simulated seconds in the updated five-trial batch. Compare the printed simulated time separately from wall time: GUI playback targets real time, while software rendering and recording can add wall-clock overhead. The updated batch's mean headless wall time was 4.518 s on this environment. Speeds are controlled in `config/planning.yaml`; the tested defaults cap joint commands at 1.2 rad/s and 2.8 rad/s², use 0.09 m/s approaches, and retain 0.035 m/s for the final socket depth plus 15 mm of insertion.
+
 ## Missing robot files or XML failures
 
 The repository includes the small licensed mesh set. Run `scripts/fetch_robot.py` only to restore missing source files. It refuses to replace files whose content differs from the pinned upstream revision. Do not silently overwrite local model changes. Regenerate scene XML with `scripts/generate_demo_scene.py`; runtime construction uses the same generator in memory. Keep `simulation/scenes/` and `simulation/robots/` in their relative locations when opening the committed XML directly.
@@ -33,6 +51,8 @@ A trajectory rejection includes the colliding geometry names and penetration dep
 The gripper will not attach remotely. It requires proximity, upright alignment, low arm velocity, and a fitting aperture. Verify top-face pose/depth calibration and contact clearance. The weld is an intentional simulation aid, not friction-only grasp validation.
 
 Review `episode.json` for separate camera and physics checks. A peg sitting on the rim fails bottom-height verification even if XY is close. Triangle/hexagon meshes can exhibit tiny contact vibrations; linear and angular velocity use separate units and thresholds, plus a 0.9 s position stability window. Do not relabel a failed trial as successful.
+
+For a correctly seated, released, stable peg with residual velocity, the controller can wait through up to two additional 0.9 s verification windows before attempting a new grasp. All success thresholds remain unchanged. An arm that still exceeds its settling velocity threshold after the 0.25 s endpoint budget stops the motion sequence with a settling error.
 
 ## Keyboard focus and stop
 

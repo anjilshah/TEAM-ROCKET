@@ -1,0 +1,23 @@
+{
+  "baseline": "../evaluation/summary.json",
+  "optimized": "summary.json",
+  "baseline_mean_simulation_seconds": 228.86160000036472,
+  "optimized_mean_simulation_seconds": 90.20639999997117,
+  "speedup": 2.537088277555006,
+  "duration_reduction_percent": 60.58473767559634,
+  "baseline_joint_segments_seed0": 268,
+  "baseline_fixed_intermediate_settle_seconds_seed0": 67.0,
+  "optimized_first_attempt_grasps": 20,
+  "optimized_verified_placements": 20,
+  "trials": 5,
+  "max_joint_speed_rad_s": 1.2,
+  "max_joint_acceleration_rad_s2": 2.8,
+  "approach_speed_m_s": 0.09,
+  "insertion_speed_m_s": 0.035,
+  "live_camera_fps_maximum": 4,
+  "viewer_fps_maximum": 30,
+  "test_count": 61,
+  "test_failures": 0,
+  "physical_timestep_seconds": 0.002,
+  "placement_thresholds_changed": false
+}

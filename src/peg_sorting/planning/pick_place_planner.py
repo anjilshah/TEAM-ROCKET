@@ -41,6 +41,9 @@ def execute_pick(robot, gripper, peg):
 def execute_place(robot, gripper, peg, socket):
     high, low, rotation = placement_targets(peg, socket)
     robot.move_pose(high, rotation)
+    # Travel above the rim at approach speed; use the lower speed for insertion.
+    insertion_entry = low + [0, 0, config("simulation")["socket_depth"] + config("planning")["insertion_entry_clearance"]]
+    robot.cartesian(insertion_entry, rotation)
     robot.cartesian(low, rotation, speed=config("planning")["placement_speed"])
     gripper.release()
     robot.cartesian(high, rotation)

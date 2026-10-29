@@ -3,10 +3,10 @@
   "python": "3.10.12",
   "mujoco": "3.3.5",
   "pytest": {
-    "passed": 51,
+    "passed": 61,
     "failed": 0,
     "skipped": 0,
-    "seconds": 23.02,
+    "seconds": 8.79,
     "junit": "pytest.xml"
   },
   "dependency_check": "No broken requirements found",
@@ -35,5 +35,13 @@
   "public_publication": false,
   "manual_human_keypress_rehearsal": false,
   "csv_roundtrip": "passed",
-  "demo_video": "../demo_final/video_manifest.json"
+  "demo_video": "../performance/demo/video_manifest.json",
+  "optimized_evaluation": "../performance/summary.json",
+  "optimized_first_attempt_placements": 20,
+  "gui_full_autonomy": {
+    "success": true,
+    "verified_placements": 4,
+    "simulation_seconds": 89.894,
+    "wall_seconds": 90.01
+  }
 }

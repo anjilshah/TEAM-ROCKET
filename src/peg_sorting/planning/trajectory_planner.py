@@ -2,6 +2,7 @@
 from dataclasses import dataclass
 import mujoco
 import numpy as np
+from scipy.interpolate import CubicSpline
 from peg_sorting.utils.helpers import config
 from peg_sorting.utils.transforms import matrix_from_wxyz, wxyz
 
@@ -16,6 +17,43 @@ class JointSegment:
         u = np.clip(time / self.duration, 0, 1)
         blend = 10 * u**3 - 15 * u**4 + 6 * u**5
         return self.start + blend * (self.goal - self.start)
+
+
+@dataclass
+class JointPath:
+    """A continuous joint curve with one smooth start and stop for the whole path."""
+    curve: CubicSpline
+    duration: float
+
+    def sample(self, time):
+        u = np.clip(np.asarray(time) / self.duration, 0, 1)
+        return self.curve(10 * u**3 - 15 * u**4 + 6 * u**5)
+
+
+def derivative_bounds(curve):
+    """Exact first/second derivative bounds for a piecewise cubic joint curve."""
+    a, b, c, _ = curve.c
+    h = np.diff(curve.x)[:, None]
+    first_start = c
+    first_end = 3 * a * h**2 + 2 * b * h + c
+    critical = np.divide(-b, 3 * a, out=np.zeros_like(a), where=np.abs(a) > 1e-14)
+    first_critical = 3 * a * critical**2 + 2 * b * critical + c
+    first_critical = np.where((critical > 0) & (critical < h), first_critical, 0.)
+    first = np.max(np.abs([first_start, first_end, first_critical]))
+    second = np.max(np.abs([2 * b, 6 * a * h + 2 * b]))
+    return float(first), float(second)
+
+
+def position_extrema(curve):
+    """Include exact spline turning points when enforcing joint limits."""
+    progress = list(curve.x)
+    for i, width in enumerate(np.diff(curve.x)):
+        for joint in range(curve.c.shape[2]):
+            a, b, c = curve.c[:3, i, joint]
+            for root in np.roots([3 * a, 2 * b, c]):
+                if abs(root.imag) < 1e-10 and 0 < root.real < width:
+                    progress.append(float(curve.x[i] + root.real))
+    return np.asarray(progress)
 
 
 class TrajectoryPlanner:
@@ -80,3 +118,29 @@ class TrajectoryPlanner:
             if reason:
                 raise ValueError(f"Trajectory collision rejected: {reason}")
         return segment
+
+    def plan_path(self, waypoints, allowed_peg=None, minimum_duration=.15):
+        points = np.asarray(waypoints, float)
+        if points.ndim != 2 or points.shape[1] != 6 or len(points) < 2 or not np.isfinite(points).all():
+            raise ValueError("Invalid joint path")
+        if not np.isfinite(minimum_duration) or minimum_duration <= 0:
+            raise ValueError("Invalid path duration")
+        e = self.env
+        if np.any(points < e.limits[:, 0]) or np.any(points > e.limits[:, 1]):
+            raise ValueError("Trajectory rejected: joint limit")
+        curve = CubicSpline(np.linspace(0, 1, len(points)), points)
+        first, second = derivative_bounds(curve)
+        # qdot = q'(s) sdot; qddot = q''(s) sdot² + q'(s) sddot.
+        # Quintic progress has max sdot=1.875/T and max |sddot|<5.78/T².
+        duration = max(minimum_duration,
+                       1.875 * first / self.settings["max_joint_speed"],
+                       np.sqrt((1.875**2 * second + 5.78 * first) /
+                               self.settings["max_joint_acceleration"]))
+        # Check the actual interpolated curve, including spline overshoot between IK nodes.
+        count = max(2, int(np.ceil(first / self.settings["sample_joint_step"])) + 1)
+        progress = np.unique(np.r_[np.linspace(0, 1, count), position_extrema(curve)])
+        for q in curve(progress):
+            reason = self.collision(q, allowed_peg)
+            if reason:
+                raise ValueError(f"Trajectory collision rejected: {reason}")
+        return JointPath(curve, float(duration))

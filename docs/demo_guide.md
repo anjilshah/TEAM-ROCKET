@@ -22,7 +22,7 @@ bash launch/run_autonomy.sh --headless --seed 0 \
 
 Playback with an installed video player, or `ffplay results/demo_repeat.mp4`. The MP4 contains an overview, overhead shape/color labels and estimated positions, angled view, depth previews, simulation timestamp, weld disclosure, and the measured final outcome. The default recording rate is six frames per simulated second. No robot movement or object placement is generated from a static image. The final two seconds repeat the actual last frame for legibility.
 
-The prepared local recording is `results/demo_final.mp4`, with its episode data and final frames in `results/demo_final/`. Video files are deliberately excluded from Git to keep the source repository small. A public upload has not been performed.
+The current local recording is `results/demo_fast.mp4`, with its episode data and final frames in `results/performance/demo/`. It demonstrates the continuous-motion controller. The earlier `results/demo_final.mp4` and `results/demo_final/` artifacts preserve the original slower controller as a historical reference. Video files are deliberately excluded from Git to keep the source repository small. A public upload has not been performed.
 
 ## Suggested narration
 
@@ -31,8 +31,8 @@ The prepared local recording is `results/demo_final.mp4`, with its episode data 
 3. Explain HSV segmentation, contour classification, depth-based top-face localization, and shape-based socket matching. Show coordinates in meters and the camera depth panels.
 4. Follow the arm through pregrasp, close/assisted attachment, lift, transfer, yaw alignment, insertion, physical release, and retreat. Explicitly disclose the proximity-gated weld aid.
 5. Show all four seated pegs and the saved camera/physics verification, including insertion depth and stability.
-6. Report measured five-trial results: 20/20 placements, 5/5 complete episodes, mean 228.862 simulated seconds, mean initial pose error 0.282 mm. Identify the narrow randomization region and small sample size.
-7. Show `pytest -q` and `results/evaluation/trials.csv`. Explain that wall time is separate from simulated execution time and depends strongly on recording/GUI rendering.
+6. Report the current measured five-trial results: 20/20 first-attempt placements, 5/5 complete episodes, mean 90.206 simulated seconds, mean initial pose error 0.282 mm. Compare the preserved original mean of 228.862 s: 2.54× faster, with unchanged success thresholds. Identify the narrow randomization region and small sample size.
+7. Show `pytest -q` (61 passing tests) and `results/performance/trials.csv`. Explain that wall time is separate from simulated execution time and depends strongly on recording/GUI rendering.
 
 ## Recording the desktop
 

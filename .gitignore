@@ -17,3 +17,4 @@ results/*.avi
 !/results/evaluation/
 !/results/demo_final/
 !/results/validation/
+!/results/performance/

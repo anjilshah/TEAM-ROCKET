@@ -46,13 +46,26 @@ class AutonomousController:
                 "angled_top_z_m": top_z, "expected_top_z_m": expected_top}
 
     def verify(self, shape, socket):
-        samples = []
-        for _ in range(6):
-            self.env.step(seconds=.15)
-            samples.append(self.env.data.body(f"peg_{shape}").xpos.copy())
-        physical = evaluate_placement(self.env, shape, samples)
-        camera = self.camera_verification(shape, socket)
-        return {"success": physical["success"] and camera["success"], "physics": physical, "camera": camera}
+        for window in range(config("planning")["verification_settle_rechecks"] + 1):
+            samples = []
+            for _ in range(6):
+                self.env.step(seconds=.15)
+                samples.append(self.env.data.body(f"peg_{shape}").xpos.copy())
+            physical = evaluate_placement(self.env, shape, samples)
+            camera = self.camera_verification(shape, socket)
+            result = {"success": physical["success"] and camera["success"], "physics": physical,
+                      "camera": camera, "settle_windows": window + 1}
+            if result["success"]:
+                return result
+            # A seated peg with residual contact vibration gets time to settle
+            # before a costly re-grasp. Every recheck uses the same strict criteria.
+            needs_settling = (camera["success"] and physical["released"] and physical["stable"] and
+                              physical["xy_error_m"] < .003 and physical["bottom_error_m"] < .0025 and
+                              physical["orientation_error_rad"] < .045 and
+                              (physical["linear_speed_m_s"] >= .01 or physical["angular_speed_rad_s"] >= .10))
+            if not needs_settling:
+                return result
+        return result
 
     def run(self, seed=0):
         start_wall, start_sim = time.perf_counter(), self.env.data.time

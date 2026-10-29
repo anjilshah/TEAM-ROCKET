@@ -8,11 +8,13 @@ Autonomous, vision-guided sorting of four colored pegs with the **Interbotix Wid
 
 Tested on Ubuntu 22.04.4 x86-64, **Python 3.10.12**, **MuJoCo 3.3.5**, NumPy 2.2.6, SciPy 1.15.3, OpenCV 4.11.0, and PyYAML 6.0.2. Dependency distributions are pinned in `requirements.txt`; the complete installed dependency set is in `requirements-lock.txt`.
 
-Five actual autonomous trials, seeds 0–4, produced **20/20 verified placements and 5/5 complete trials**. Each trial detected and classified all four pegs and detected all four sockets. Mean initial top-face position error was **0.282 mm**; mean execution time was **228.862 simulated seconds**, or **57.215 simulated seconds per peg**. Mean headless wall time was **10.149 seconds** on this environment. Wall time varies with rendering and machine load. These measurements describe this small, conservative simulation test set; they are not a general reliability estimate or a hardware claim.
+With the faster continuous-motion controller, five actual autonomous trials, seeds 0–4, produced **20/20 verified placements and 5/5 complete trials**, all on the first grasp/placement attempt. Each trial detected and classified all four pegs and detected all four sockets. Mean initial top-face position error was **0.282 mm**; mean execution time was **90.206 simulated seconds**, or **22.552 simulated seconds per peg**. Mean headless wall time was **4.518 seconds** on this environment.
 
-Raw measurements: [CSV](results/evaluation/trials.csv), [summary](results/evaluation/summary.json), and per-trial `episode.json` files. Physical insertion, release, alignment, stability, overhead top-face height, and angled-camera height must all pass. Near-socket positions alone fail verification.
+The original five-trial controller averaged **228.862 simulated seconds**. The updated controller is **2.54× faster**, reducing simulated execution time by **60.6%**, while retaining the same placement criteria. Wall time varies with rendering, recording, and machine load. These measurements describe this small, conservative simulation test set; they are not a general reliability estimate or a hardware claim.
 
-The automated suite currently contains **51 passing tests**, including a complete autonomous episode, rendered camera calibration checks, physical socket tests, actual collision rejection, and interruption of active keyboard-commanded motion. The simulation, vision, and teleoperation GUI launchers were opened and closed successfully; a GLFW Wayland window-position warning is harmless in this environment.
+Current measurements: [CSV](results/performance/trials.csv), [summary](results/performance/summary.json), and per-trial `episode.json` files under `results/performance/`. The original [CSV](results/evaluation/trials.csv) and [summary](results/evaluation/summary.json) remain as the historical baseline. Physical insertion, release, alignment, stability, overhead top-face height, and angled-camera height must all pass. Near-socket positions alone fail verification.
+
+The automated suite currently contains **61 passing tests** (8.79 seconds in the latest run), including a complete autonomous episode, rendered camera calibration checks, physical socket tests, continuous-path derivative/limit checks, actual collision rejection, GUI refresh pacing, and interruption of active keyboard-commanded motion. Simulation, vision, and teleoperation GUI launchers were opened and closed successfully. A complete autonomous GUI run verified all four placements in **90.01 wall seconds** (89.894 simulated seconds). A GLFW Wayland window-position warning is harmless in this environment.
 
 ## Implemented features
 
@@ -23,7 +25,7 @@ The automated suite currently contains **51 passing tests**, including a complet
 - Rotation-invariant polygon classification and regular-polygon boundary fitting for position/yaw estimation.
 - Board detection from its magenta perimeter; socket shapes and centers from the observed depth discontinuities. No fixed pixel coordinates or stored socket XY positions enter perception or motion targets.
 - Six-joint damped least-squares IK using the compiled model Jacobian and both position and orientation tolerances.
-- Joint-limit checks, smooth quintic trajectories, conservative Cartesian approaches, and sampled collision checks including the carried peg.
+- Continuous joint curves through Cartesian IK waypoints, smooth quintic time progress, exact joint-limit checks, and sampled curve collision checks including the carried peg.
 - Actuated gripper fingers with a **proximity/alignment-gated simulated weld attachment**, disclosed below.
 - Autonomous pick, lift, transfer, align, insert, release, retreat, and two-camera/physical verification, with one bounded retry where recovery is safe.
 - Keyboard teleoperation, simulation motion stop, seeded evaluation, CSV/JSON results, and real-run video recording.
@@ -54,6 +56,14 @@ bash launch/run_autonomy.sh
 ```
 
 Simulation and teleoperation show the MuJoCo viewer. Vision, teleoperation, and autonomous GUI modes also show overhead/angled RGB and depth panels. Click the viewer or camera window to give it keyboard focus. Close the viewer to exit. GUI runs pace toward real time; actual speed depends on rendering performance.
+
+Restart any simulation process that was already running before this update so it loads the faster controller. Live RGB-D panels refresh at most four times per wall-clock second by default; viewer synchronization runs independently at up to 30 Hz. On a slower machine, reduce panel work with:
+
+```bash
+bash launch/run_autonomy.sh --camera-fps 2
+```
+
+`--camera-fps` changes only live panel refresh. Autonomous perception captures and recording cadence remain independent.
 
 For a display-independent autonomous run:
 
@@ -103,7 +113,8 @@ simulation/
 launch/                    Virtual-environment-aware executable launchers
 scripts/                   Scene generation, evaluation, detection capture
 tests/                     Unit and marked simulation integration tests
-results/evaluation/        Five measured episodes, screenshots, CSV, JSON
+results/performance/       Current faster-controller trials, screenshots, CSV, JSON
+results/evaluation/        Preserved original-controller measurements
 docs/                      Setup, architecture, demo, troubleshooting, validation
 ```
 
@@ -123,7 +134,9 @@ Ground-truth peg poses are used only for evaluation, local grasp capture checks,
 
 ## Motion and grasp assumptions
 
-The arm uses the real model's forward kinematics and Jacobian. IK accepts a target only when both errors meet the configured tolerances. Motions use conservative waypoints and quintic joint interpolation, capped at 0.65 rad/s and 1.4 rad/s². Collision checks sample at most 0.025 rad joint increments. The approach/lowering stages use short Cartesian waypoints and slower placement. This is a sampled conservative planner, not a globally complete planner or continuous swept-volume guarantee.
+The arm uses the real model's forward kinematics and Jacobian. IK accepts a target only when both errors meet the configured tolerances. Cartesian motions retain **8 mm IK nodes**, then fit a continuous cubic joint curve and apply one quintic time-progress function over the whole motion. The arm starts and stops once per complete approach/lift/retreat rather than stopping at every IK node. Exact piecewise-cubic derivative bounds set durations that respect **1.2 rad/s** and **2.8 rad/s²** command limits. Joint-position extrema are checked explicitly to catch spline overshoot; collision checks sample the actual curve at bounded joint increments of at most 0.025 rad.
+
+Endpoint settling is adaptive, from **0.04 to 0.25 seconds**, and must finish below the arm velocity threshold. General Cartesian approaches use **0.09 m/s**. Only the final **socket depth + 15 mm** of lowering uses the slower **0.035 m/s** insertion setting. This removes the previous repeated 0.25-second waits at every Cartesian node while preserving the insertion stage and collision checks. This is a sampled conservative planner, not a globally complete planner or continuous swept-volume guarantee.
 
 The gripper actuates both coupled fingers. A weld may activate only within **9 mm** of the peg's grasp region, with an upright peg, downward tool, sufficiently small arm velocity, and a compatible aperture. The weld preserves the current relative pose; it does not reposition the peg. It is disabled on release, after which gravity and collisions determine the seated pose. **This demonstrates vision-guided manipulation with an assisted simulation grasp, not validated friction-only grasping.** No runtime transport code writes peg `qpos`. Controlled state assignment appears only in initial scene construction, scratch collision-planning data, and explicit physical-fixture tests.
 
@@ -141,6 +154,8 @@ Randomization is ±6 mm in four disjoint reachable source cells, plus initial ya
 
 Placement requires release, XY error <3 mm, bottom-height error <2.5 mm, upright orientation, symmetry-aware yaw error <0.045 rad, linear speed <0.01 m/s, angular speed <0.10 rad/s, and positional stability across a 0.9 s observation window. Both RGB-D views must agree with the expected inserted top height. All pegs are checked physically again at episode end. Small mesh-contact vibrations are tolerated within these explicit bounds; see [validation](docs/validation.md).
 
+If an otherwise seated, released, stable peg has residual contact velocity, verification may repeat the same 0.9-second observation window up to twice before a grasp retry. Every recheck uses the same strict camera, position, orientation, and velocity criteria.
+
 ## Demonstration and publication
 
 Record an actual autonomous run:
@@ -150,7 +165,7 @@ bash launch/run_autonomy.sh --headless --seed 0 \
   --output results/demo_repeat --record results/demo_repeat.mp4
 ```
 
-The video shows the overview, overhead detections with estimated positions, angled RGB, metric depth previews, grasp disclosure, simulation time, and final verified outcome. Large generated recordings are excluded from Git. A locally generated recording is stored as `results/demo_final.mp4`; see [demo guide](docs/demo_guide.md) for playback, public upload, and narration instructions.
+The video shows the overview, overhead detections with estimated positions, angled RGB, metric depth previews, grasp disclosure, simulation time, and final verified outcome. The updated controller's local recording is **`results/demo_fast.mp4`**, with its episode artifacts under `results/performance/demo/`. Recording wall time includes rendering and encoding and differs from headless timing. The earlier `results/demo_final.mp4` records the original slower controller and is retained as a historical baseline. Large generated recordings are excluded from Git; see [demo guide](docs/demo_guide.md) for playback, public upload, and narration instructions.
 
 The repository is prepared locally for `anjilshah/tri-wizard-peg-trial`. **No public repository, push, or video upload is performed without approval.** GitHub CLI was unavailable during setup; the connected GitHub API returned 404 for the target repository, which can mean missing or inaccessible.
 

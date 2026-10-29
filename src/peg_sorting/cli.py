@@ -14,6 +14,25 @@ from peg_sorting.vision.visualization import annotate, depth_visual
 from peg_sorting.utils.helpers import project_root
 
 
+class WallClockRate:
+    """Throttle UI work independently of physics and discard missed refreshes."""
+    def __init__(self, frequency):
+        if not np.isfinite(frequency) or frequency <= 0:
+            raise ValueError("Refresh frequency must be finite and positive")
+        self.interval = 1. / frequency
+        self.next_due = -float("inf")
+
+    def ready(self, now):
+        if now < self.next_due:
+            return False
+        self.next_due = now + self.interval
+        return True
+
+    def completed(self, now):
+        # Leave time for physics between expensive software-rendered frames.
+        self.next_due = max(self.next_due, now + self.interval)
+
+
 class DemoRecorder:
     def __init__(self, cameras, path, fps=6):
         self.cameras, self.fps, self.next_time = cameras, fps, 0.
@@ -71,8 +90,11 @@ def main(argv=None):
     parser.add_argument("--seed", type=int, default=0)
     parser.add_argument("--output", type=Path)
     parser.add_argument("--record", type=Path)
+    parser.add_argument("--camera-fps", type=float, default=4., help="Maximum live RGB-D panel refresh rate (default: 4 Hz; recording is independent)")
     parser.add_argument("--seconds", type=float, help="Stop simulation/vision/teleop after this many simulated seconds (headless default: 10)")
     args = parser.parse_args(argv)
+    if not np.isfinite(args.camera_fps) or args.camera_fps <= 0:
+        parser.error("--camera-fps must be finite and positive")
     if args.mode == "teleop" and args.headless:
         parser.error("Teleoperation requires the interactive viewer; remove --headless")
     output = args.output or project_root() / "results/runs" / f"{args.mode}_seed{args.seed}_{time.time_ns()}"
@@ -90,28 +112,37 @@ def main(argv=None):
             viewer.cam.distance, viewer.cam.azimuth, viewer.cam.elevation = 1.25, 135, -38
         if args.record:
             recorder = DemoRecorder(cameras, args.record)
-        last_draw, wall_start = -1., time.perf_counter()
+        wall_start = time.perf_counter()
+        viewer_rate = WallClockRate(30.)
+        camera_rate = WallClockRate(args.camera_fps)
+        keyboard_rate = WallClockRate(50.)
+        has_camera_panel = args.mode in ("vision", "teleop", "autonomy")
 
         def on_step(e):
-            nonlocal last_draw
             if recorder:
                 recorder.capture(e)
-            if viewer and e.data.time - last_draw >= .05:
+            if not viewer:
+                return
+            now = time.perf_counter()
+            if viewer_rate.ready(now):
                 if not viewer.is_running():
                     raise InterruptedError("Viewer closed")
                 viewer.sync()
-                if args.mode in ("vision", "teleop", "autonomy"):
-                    panel = camera_panel(cameras, args.mode != "teleop")
-                    if teleop:
-                        cv2.putText(panel, "W/S A/D R/F | O/C | P pick | L place | SPACE stop | Q quit", (10, 25), cv2.FONT_HERSHEY_SIMPLEX, .5, (255, 255, 255), 1)
-                    cv2.imshow("Tri-Wizard: overhead / angled RGB + metric depth", cv2.cvtColor(panel, cv2.COLOR_RGB2BGR))
-                    code = cv2.waitKey(1) & 0xff
-                    if code != 255 and teleop:
-                        teleop.enqueue(code)
-                last_draw = e.data.time
-                remaining = e.data.time - (time.perf_counter() - wall_start)
-                if remaining > 0:
-                    time.sleep(min(remaining, .05))
+            if has_camera_panel and camera_rate.ready(now):
+                panel = camera_panel(cameras, args.mode != "teleop")
+                if teleop:
+                    cv2.putText(panel, "W/S A/D R/F | O/C | P pick | L place | SPACE stop | Q quit", (10, 25), cv2.FONT_HERSHEY_SIMPLEX, .5, (255, 255, 255), 1)
+                cv2.imshow("Tri-Wizard: overhead / angled RGB + metric depth", cv2.cvtColor(panel, cv2.COLOR_RGB2BGR))
+                camera_rate.completed(time.perf_counter())
+            # Poll keys even while the expensive RGB-D panel keeps its last frame.
+            if has_camera_panel and keyboard_rate.ready(time.perf_counter()):
+                code = cv2.waitKey(1) & 0xff
+                if code != 255 and teleop:
+                    teleop.enqueue(code)
+            # Keep ordinary GUI playback near 1x; camera refresh never changes dt.
+            remaining = e.data.time - (time.perf_counter() - wall_start)
+            if remaining > 0:
+                time.sleep(min(remaining, .005))
         env.on_step = on_step
         if args.mode == "autonomy":
             result = AutonomousController(env, cameras, output).run(args.seed)
