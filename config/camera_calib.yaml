@@ -1,0 +1,7 @@
+# Intrinsics/extrinsics are derived at runtime from the compiled MuJoCo camera.
+depth_units: meters
+renderer_depth: metric_optical_z
+pixel_frame: OpenCV_x_right_y_down_z_forward
+mujoco_camera_frame: x_right_y_up_z_backward
+pixel_center: half_pixel
+maximum_depth: 5.0

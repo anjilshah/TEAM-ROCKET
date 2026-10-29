@@ -1,0 +1,12 @@
+timestep: 0.002
+peg_height: 0.10
+peg_mass: 0.07
+socket_clearance: 0.003
+socket_depth: 0.028
+board_height: 0.03
+board_center: [0.265, 0.135]
+board_half_size: [0.16, 0.145]
+seed: 0
+# Four disjoint source cells, each jittered by up to 6 mm.
+peg_centers: [[0.18, -0.115], [0.31, -0.115], [0.18, -0.245], [0.31, -0.245]]
+socket_centers: [[0.19, 0.065], [0.34, 0.065], [0.19, 0.205], [0.34, 0.205]]

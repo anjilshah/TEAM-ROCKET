@@ -1,0 +1,11 @@
+model: wx250s
+source: https://github.com/google-deepmind/mujoco_menagerie/tree/f3b6013629c7b94f8ee93fd977b161fa8350f9bc/trossen_wx250s
+arm_joints: [waist, shoulder, elbow, forearm_roll, wrist_angle, wrist_rotate]
+grasp_site: grasp_site
+# Derived from upstream finger contact locations: 0.066 + 0.042 m.
+grasp_site_offset: [0.108, 0, 0]
+# Official Interbotix ee_gripper_link, used to validate zero-pose FK.
+official_tcp_offset: [0.093575, 0, 0]
+grasp_mechanism: proximity_and_alignment_gated_weld
+open_finger: 0.037
+closed_finger: 0.015
